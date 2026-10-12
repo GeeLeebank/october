@@ -1,0 +1,46 @@
+flowchart TB
+    STD["🖥️ Desktop Hardware Standard"]
+    GEN["⚙️ General Requirements<br/>• OS compatibility<br/>• Remote mgmt<br/>• Approved vendors<br/>• 3yr warranty"]
+    COMP["▦ Component Standards"]
+    GOV["☑️ Governance<br/>• Exceptions<br/>• Annual review"]
+    VEN["≡ Approved Vendor List"]
+
+    STD --- GEN
+    STD --> COMP
+    STD --- GOV
+    GOV --> VEN
+
+    subgraph COMPONENTS["⚙️ Components"]
+        direction TB
+        subgraph ROW1[" "]
+            direction LR
+            MON["🖥️ Monitors"]
+            MOU["🖱️ Mice"]
+            KEY["⌨️ Keyboards"]
+        end
+        subgraph ROW2[" "]
+            direction LR
+            DOCK["🖥️ Docking Stations"]
+            HS["🎧 Headsets"]
+            NET["🔌 Dock & Network Connection"]
+        end
+        subgraph ROW3[" "]
+            direction LR
+            CAM["📷 Monitor Mounted Desktop Cameras"]
+        end
+    end
+
+    COMP --> COMPONENTS
+
+    classDef top fill:#cfe2f3,stroke:#3d85c6,color:#000
+    classDef side fill:#eef2f7,stroke:#8eaacc,color:#000
+    classDef comp fill:#3d85c6,stroke:#1c4587,color:#fff
+    classDef item fill:#e6e0f5,stroke:#8e7cc3,color:#000
+    classDef row fill:none,stroke:none
+
+    class STD top
+    class GEN,GOV,VEN side
+    class COMP comp
+    class MON,MOU,KEY,DOCK,HS,NET,CAM item
+    class ROW1,ROW2,ROW3 row
+    style COMPONENTS fill:#f7f5fc,stroke:#8e7cc3,stroke-width:2px
