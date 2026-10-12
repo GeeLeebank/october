@@ -1,0 +1,45 @@
+flowchart LR
+    subgraph DESK["🖥️ Desk Workstation"]
+        direction LR
+        LAP["💻 Standard Laptop"]
+        DOCK["🔌 Docking Station"]
+    end
+
+    subgraph PERIPH["⊕ Peripherals"]
+        direction TB
+        M1["🖥️ Monitor 1 – 24in FHD"]
+        M2["🖥️ Monitor 2 – 24in FHD"]
+        CAM["📷 Monitor Mounted Desktop Camera"]
+        KB["⌨️ Keyboard"]
+        MS["🖱️ Mouse"]
+        HS["🎧 Headset"]
+    end
+
+    subgraph NET["🔗 Corporate Network"]
+        direction LR
+        WIFI["📶 Corporate Wi-Fi"]
+        LAN["🌐 Corporate LAN / NAC"]
+    end
+
+    LAP <-->|USB-C + PD| DOCK
+    DOCK -->|HDMI / DisplayPort| M1
+    DOCK -->|HDMI / DisplayPort| M2
+    DOCK -->|USB-A / USB-C| CAM
+    CAM -.-|Mounted on| M1
+    DOCK -->|USB-A| KB
+    DOCK -->|USB-A| MS
+    DOCK -->|USB / Audio| HS
+    LAP -.->|WPA3-Enterprise if required| WIFI
+    DOCK -->|RJ-45 1Gbps 802.1X| LAN
+
+    classDef desk fill:#ffffff,stroke:#3d85c6,color:#000
+    classDef periph fill:#ffffff,stroke:#c2185b,color:#000
+    classDef net fill:#d9ead3,stroke:#38761d,color:#000
+
+    class LAP,DOCK desk
+    class M1,M2,CAM,KB,MS,HS periph
+    class WIFI,LAN net
+
+    style DESK fill:#f3f8fd,stroke:#3d85c6,stroke-width:2px
+    style PERIPH fill:#fdf2f7,stroke:#c2185b,stroke-width:2px
+    style NET fill:#f4faf1,stroke:#38761d,stroke-width:2px
