@@ -1,0 +1,24 @@
+graph TB
+    subgraph SITE["Office Site (Ashurst-owned)"]
+        PANEL1["Door Panel"]
+        PANEL2["Door Panel"]
+        READER["Card Readers / Locks"]
+        CAM["CCTV Cameras / NVR"]
+        USERPC["Corporate User PCs"]
+        CORPVLAN["Corporate VLAN<br/>No IoT segregation<br/>FW rules unknown"]
+        READER --> PANEL1
+        READER --> PANEL2
+        PANEL1 --- CORPVLAN
+        PANEL2 --- CORPVLAN
+        CAM --- CORPVLAN
+        USERPC --- CORPVLAN
+    end
+    subgraph DC["Data Centre"]
+        CCURE_OLD["CCURE Server 10.10.103.90<br/>Windows 2012 R2 (EOL)"]
+        CCURE_NEW["CCURE Server 10.10.103.60<br/>Like-for-like replacement"]
+    end
+    CORPVLAN -->|"Unencrypted / ad-hoc rules"| CCURE_OLD
+    CCURE_OLD -.->|"Migration"| CCURE_NEW
+    ADMIN["Physical Security Team<br/>Direct login, no AD"] --> CCURE_OLD
+    RISK["⚠ Lateral movement risk<br/>Doors + CCTV + Corp share path"]
+    CORPVLAN -.- RISK
