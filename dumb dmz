@@ -1,0 +1,47 @@
+flowchart LR
+    %% ===== STATIONS =====
+    NET(("🌐 Internet<br/><b>Start</b>"))
+    PA(("🛡️ Palo Alto<br/><b>Front-Door Guard</b><br/>Checks the envelope<br/>Does NOT open it"))
+    ADC(("📬 FortiADC<br/><b>Mailroom</b><br/>Opens + reads the letter"))
+    VLAN(("🚪 App's Own Room<br/><b>App VLAN</b><br/>One room per app"))
+    FGT(("🔒 FortiGate<br/><b>Locked Office Door</b><br/>Default answer = NO"))
+    CORP(("🏢 Ashurst Offices<br/><b>Corporate Network</b><br/>End of the line"))
+    SDWAN(("🛰️ SD-WAN<br/><b>EdgeConnect</b><br/>Other sites"))
+    APPX(("🖥️ Exception App<br/><b>Opens its own post</b>"))
+
+    %% ===== MAIN LINE (red) =====
+    NET ==>|"Main Line"| PA
+    PA ==>|"Still sealed"| ADC
+    ADC ==>|"Checked + clean"| VLAN
+    VLAN ==>|"Needs internal data?"| FGT
+    FGT ==>|"Only if on the list"| CORP
+
+    %% ===== EXCEPTION LINE (orange, dashed) =====
+    ADC -.->|"Exception Line:<br/>passes through UNOPENED"| FGT
+    FGT -.->|"FortiGate opens + inspects instead"| APPX
+
+    %% ===== SD-WAN BRANCH (blue) =====
+    FGT ---|"Route control"| SDWAN
+
+    %% ===== STYLES =====
+    classDef start fill:#ffffff,stroke:#000000,stroke-width:4px,color:#000
+    classDef guard fill:#ffffff,stroke:#E32017,stroke-width:5px,color:#000
+    classDef mail fill:#ffffff,stroke:#E32017,stroke-width:5px,color:#000
+    classDef room fill:#ffffff,stroke:#E32017,stroke-width:5px,color:#000
+    classDef door fill:#ffffff,stroke:#E32017,stroke-width:5px,color:#000
+    classDef office fill:#E32017,stroke:#000000,stroke-width:4px,color:#fff
+    classDef wan fill:#ffffff,stroke:#0098D4,stroke-width:5px,color:#000
+    classDef exc fill:#ffffff,stroke:#F86C00,stroke-width:5px,color:#000
+
+    class NET start
+    class PA guard
+    class ADC mail
+    class VLAN room
+    class FGT door
+    class CORP office
+    class SDWAN wan
+    class APPX exc
+
+    linkStyle 0,1,2,3,4 stroke:#E32017,stroke-width:6px
+    linkStyle 5,6 stroke:#F86C00,stroke-width:4px,stroke-dasharray:6
+    linkStyle 7 stroke:#0098D4,stroke-width:4px
