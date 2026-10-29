@@ -1,0 +1,13 @@
+sequenceDiagram
+    participant ADM as Security Admin (via IoT_A jump box)
+    participant CC as CCURE Server (IoT_A)
+    participant PN as Door Panel (IoT_A, branch)
+    participant SC as Rapid 7 Engine (IoT_A)
+    participant CORP as Corp VRF
+    ADM->>CC: Manage cardholders / schedules
+    CC->>PN: Config + schedule push (vendor port TBC)
+    PN->>CC: Door events, alarms, access logs
+    SC-->>PN: One-way vulnerability scan
+    CORP--xCC: ❌ Denied (no Corp → IoT_A)
+    CC--xCORP: ❌ Denied (no IoT_A → Corp)
+    Note over CC,PN: Transition only: CCURE also manages legacy<br/>corporate-VLAN panels under time-bound exception
