@@ -1,0 +1,26 @@
+graph TB
+    subgraph CORP["Corp VRF"]
+        CORPUSERS["Corporate Users / Servers / AD"]
+    end
+    subgraph IOTA["IoT_A VRF (no corporate connectivity)"]
+        subgraph DCIOT["DC — IoT_A segment"]
+            CCURE["CCURE Server 10.10.103.60"]
+            JUMP["Management Jump Box<br/>(access method TBC)"]
+            SCAN["Rapid 7 Scan Engine<br/>(IoT_A)"]
+            IDP["Identity Store<br/>(IoT_A-local or exception — TBC)"]
+        end
+        subgraph BRANCH["Branch Sites — IoT_A interfaces (blan1)"]
+            P1["Door Panels — Site A<br/>802.1X MAC auth"]
+            P2["Door Panels — Site B<br/>802.1X MAC auth"]
+        end
+        BIO["IoT BIO overlay<br/>AES-GCM-256 tunnels<br/>BMS_SECURITY zone"]
+        P1 --- BIO
+        P2 --- BIO
+        BIO --- CCURE
+        JUMP --> CCURE
+        SCAN -.->|"One-way scan"| BIO
+        IDP --- CCURE
+    end
+    CORP -.-x|"❌ Denied both directions"| IOTA
+    NET["Vendor update servers<br/>(restricted egress TBC)"]
+    IOTA -.->|"Direct breakout, not Netskope"| NE
